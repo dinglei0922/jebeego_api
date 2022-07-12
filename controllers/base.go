@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/streadway/amqp"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -18,6 +19,19 @@ type ReturnMsg struct {
 	Code int
 	Msg  string
 	Data interface{}
+}
+
+type RabbitMQ struct {
+	conn    *amqp.Connection
+	channel *amqp.Channel
+	//队列名称
+	QueueName string
+	//交换机名称
+	Exchange string
+	//bind Key 名称
+	Key string
+	//连接信息
+	Mqurl string
 }
 
 /*
@@ -116,10 +130,16 @@ func (this *BaseController) ErrorJson(code int, msg string, data interface{}) {
 	this.StopRun()
 }
 
+func (this *BaseController)NewRabbitMQ(MQURL string,queueName string, exchange string, key string) *RabbitMQ {
+	return &RabbitMQ{QueueName: queueName, Exchange: exchange, Key: key, Mqurl: MQURL}
+}
+
 /*
 发送钉钉消息
 */
 func (this *BaseController)Dingding(msg string) {
+	fmt.Println("err",msg)
+	return
 	url := "https://oapi.dingtalk.com/robot/send?access_token=a7ac389ba1b08e15245b255f6c7efdcfcc27e7f3ae1dc71a44a9cea1e311a389"
 	var data map[string]interface{}
 	var text map[string]string

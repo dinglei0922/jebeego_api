@@ -13,5 +13,5 @@ import (
 )
 
 func init() {
-	beego.Router("footprint/publish",&controllers.FootPrintMQController{},"post:MQPublish")
+	beego.Router("footprint/publish",&controllers.FootPrintMQController{},"get:MQPublish")
 }

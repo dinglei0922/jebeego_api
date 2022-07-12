@@ -1,12 +1,11 @@
 package main
 
 import (
-	_ "jebeego_api/routers"
-
 	"github.com/astaxie/beego"
+	_ "jebeego_api/controllers"
+	_ "jebeego_api/routers"
 )
 
 func main() {
-
 	beego.Run()
 }
