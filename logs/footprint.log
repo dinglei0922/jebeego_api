@@ -1,0 +1,50 @@
+2022/07/13 21:57:01.085 [I] [footprintmq.go:158]  消费了 msg:{0xc00020e240 map[] text/plain  2 0     0001-01-01 00:00:00 +0000 UTC    ctag-./jebeego_api.exe-1 0 1 false  footprint [100 105 110 103 108 101 105 49]}
+2022/07/13 21:57:01.218 [D] [server.go:2879]  |            ::1|[43m 404 [0m|     2.6401ms| nomatch|[44m GET     [0m /favicon.ico
+2022/07/13 21:57:04.412 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     8.7253ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 21:57:04.412 [I] [footprintmq.go:158]  消费了 msg:{0xc00020e240 map[] text/plain  2 0     0001-01-01 00:00:00 +0000 UTC    ctag-./jebeego_api.exe-1 0 2 false  footprint [100 105 110 103 108 101 105 50]}
+2022/07/13 21:57:06.410 [D] [server.go:2879]  |            ::1|[42m 200 [0m|    11.5245ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 21:57:06.410 [I] [footprintmq.go:158]  消费了 msg:{0xc00020e240 map[] text/plain  2 0     0001-01-01 00:00:00 +0000 UTC    ctag-./jebeego_api.exe-1 0 3 false  footprint [100 105 110 103 108 101 105 51]}
+2022/07/13 22:00:36.044 [I] [footprintmq.go:158]  消费了 msg:dinglei4
+2022/07/13 22:00:38.081 [I] [footprintmq.go:158]  消费了 msg:dinglei5
+2022/07/13 22:00:38.081 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     7.4045ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:00:39.686 [I] [footprintmq.go:158]  消费了 msg:dinglei6
+2022/07/13 22:00:39.686 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     5.9907ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:04:10.092 [I] [footprintmq.go:158]  消费了 msg:dinglei6
+2022/07/13 22:04:10.626 [I] [footprintmq.go:158]  消费了 msg:dinglei6
+2022/07/13 22:04:10.627 [D] [server.go:2879]  |            ::1|[42m 200 [0m|    40.9038ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:04:10.926 [I] [footprintmq.go:158]  消费了 msg:dinglei6
+2022/07/13 22:04:10.926 [D] [server.go:2879]  |            ::1|[42m 200 [0m|    23.7193ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:10:19.950 [I] [footprintmq.go:158]  消费了 msg:dinglei6
+2022/07/13 22:10:20.455 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     8.5852ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:10:20.455 [I] [footprintmq.go:158]  消费了 msg:dinglei6
+2022/07/13 22:10:36.417 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     6.9028ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:10:36.417 [I] [footprintmq.go:158]  消费了 msg:dinglei7
+2022/07/13 22:10:45.600 [I] [footprintmq.go:158]  消费了 msg:dinglei7
+2022/07/13 22:10:45.600 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     4.9991ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:14:16.920 [I] [footprintmq.go:158]  消费了 msg:dinglei7
+2022/07/13 22:14:25.272 [I] [footprintmq.go:158]  消费了 msg:dinglei7
+2022/07/13 22:14:25.272 [D] [server.go:2879]  |            ::1|[42m 200 [0m|    32.2483ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:14:37.451 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     6.7949ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:14:37.452 [I] [footprintmq.go:158]  消费了 msg:dinglei8
+2022/07/13 22:16:12.691 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     8.0303ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:16:24.992 [D] [server.go:2879]  |            ::1|[42m 200 [0m|   118.0676ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:16:25.273 [D] [server.go:2879]  |            ::1|[42m 200 [0m|    16.1974ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:37:23.753 [I] [footprintmq.go:158]  消费了 msg:dinglei9
+2022/07/13 22:37:23.754 [N] [base.go:174]  run mode [test] 
+2022/07/13 22:37:36.655 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     9.5104ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:37:36.655 [I] [footprintmq.go:158]  消费了 msg:dinglei9
+2022/07/13 22:37:36.655 [N] [base.go:174]  run mode [test] 
+2022/07/13 22:37:37.121 [I] [footprintmq.go:158]  消费了 msg:dinglei9
+2022/07/13 22:37:37.121 [N] [base.go:174]  run mode [test] 
+2022/07/13 22:37:37.121 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     6.1426ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:39:11.191 [I] [footprintmq.go:158]  消费了 msg:123
+2022/07/13 22:39:19.722 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     5.6357ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:39:19.722 [I] [footprintmq.go:158]  消费了 msg:123
+2022/07/13 22:39:19.889 [I] [footprintmq.go:158]  消费了 msg:123
+2022/07/13 22:39:19.889 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     4.1432ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:39:20.117 [I] [footprintmq.go:158]  消费了 msg:123
+2022/07/13 22:39:20.120 [D] [server.go:2879]  |            ::1|[42m 200 [0m|    20.2844ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:39:20.257 [I] [footprintmq.go:158]  消费了 msg:123
+2022/07/13 22:39:20.258 [D] [server.go:2879]  |            ::1|[42m 200 [0m|     8.5968ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:39:20.412 [D] [server.go:2879]  |            ::1|[42m 200 [0m|      8.765ms|   match|[44m GET     [0m /footprint/publish   r:footprint/publish
+2022/07/13 22:39:20.412 [I] [footprintmq.go:158]  消费了 msg:123

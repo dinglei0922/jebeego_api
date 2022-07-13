@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/streadway/amqp"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
@@ -32,6 +33,20 @@ type RabbitMQ struct {
 	Key string
 	//连接信息
 	Mqurl string
+}
+
+type LoggerConfig struct {
+	FileName            string `json:"filename"` //将日志保存到的文件名及路径
+	Level               int    `json:"level"`    // 日志保存的时候的级别，默认是 Trace 级别
+	Maxlines            int    `json:"maxlines"` // 每个文件保存的最大行数，若文件超过maxlines，则将日志保存到下个文件中，为0表示不设置。默认值 1000000
+	Maxsize             int    `json:"maxsize"`  // 每个文件保存的最大尺寸，若文件超过maxsize，则将日志保存到下个文件中，为0表示不设置。默认值是 1 << 28, //256 MB
+	Daily               bool   `json:"daily"`    // 设置日志是否每天分割一次，默认是 true
+	Maxdays             int    `json:"maxdays"`  // 设置保存最近几天的日志文件，超过天数的日志文件被删除，为0表示不设置，默认保存 7 天
+	Rotate              bool   `json:"rotate"`   // 是否开启 logrotate，默认是 true
+	Perm                string `json:"perm"`     // 日志文件权限
+	RotatePerm          string `json:"rotateperm"`
+	EnableFuncCallDepth bool   `json:"-"` // 输出文件名和行号
+	LogFuncCallDepth    int    `json:"-"` // 函数调用层级
 }
 
 /*
@@ -132,6 +147,28 @@ func (this *BaseController) ErrorJson(code int, msg string, data interface{}) {
 
 func (this *BaseController)NewRabbitMQ(MQURL string,queueName string, exchange string, key string) *RabbitMQ {
 	return &RabbitMQ{QueueName: queueName, Exchange: exchange, Key: key, Mqurl: MQURL}
+}
+
+func (this *BaseController)SiteLogs(filename string,msg string,logtype int){
+	var logCfg = LoggerConfig{
+		FileName:            beego.AppConfig.String("LogsPath")+filename,
+		Level:               logs.LevelDebug,
+		Daily:               true,
+		EnableFuncCallDepth: false,
+		LogFuncCallDepth:    3,
+		RotatePerm:          "777",
+		Perm:                "777",
+	}
+
+	// 设置beego log库的配置
+	b, _ := json.Marshal(&logCfg)
+	logs.SetLogger(logs.AdapterFile, string(b))
+	if logtype==1 {
+		logs.Info(msg)
+	}else{
+		logs.Error(msg)
+	}
+	logs.Async()
 }
 
 /*

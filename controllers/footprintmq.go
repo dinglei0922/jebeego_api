@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/streadway/amqp"
-	"log"
 	"time"
 )
 
 var queueName = "footprint"
+var logName = "footprint.log"
 
 type FootPrintMQController struct {
 	BaseController
@@ -33,14 +33,12 @@ func (c *FootPrintMQController)MQPublish() {
 	var err error
 	rabbit.conn, err = amqp.Dial(rabbit.Mqurl)
 	if err != nil {
-		c.Dingding("生成者-RabbitMQ连接失败")
-		return
+		c.ErrorInfo(fmt.Sprintf("生成者-RabbitMQ连接失败:%v",err))
 	}
 	// 创建一个channel
 	rabbit.channel, err = rabbit.conn.Channel()
 	if err != nil {
-		c.Dingding("生成者-channel打开失败")
-		return
+		c.ErrorInfo(fmt.Sprintf("生成channel打开失败:%v",err))
 	}
 	defer rabbit.channel.Close()
 	mqcontent := c.GetString("mqcontent")
@@ -55,7 +53,7 @@ func (c *FootPrintMQController)MQPublish() {
 	)
 
 	if err != nil {
-		//c.Dingding("生成者-队列连接失败")
+		c.ErrorInfo(fmt.Sprintf("声明队列失败:%v",err))
 	}
 	// 发送消息到队列中
 	err = rabbit.channel.Publish(
@@ -69,7 +67,7 @@ func (c *FootPrintMQController)MQPublish() {
 			DeliveryMode: 2,
 		})
 	if err != nil {
-		c.Dingding("生成者-发送消息到队列失败")
+		c.ErrorInfo(fmt.Sprintf("生成者-发送消息到队列失败:%v",err))
 	}
 }
 
@@ -80,22 +78,24 @@ func (c *FootPrintMQController)MQConsume() {
 	defer func() {
 		if err := recover(); err != nil {
 			time.Sleep(3 * time.Second)
-			fmt.Println("休息3秒")
-			//StartAMQPConsume()
+			c.MQConsume()
+			c.ErrorInfo(fmt.Sprintf("足迹消费错误:%v",err))
 		}
 	}()
 	// 接收参数
-	fmt.Println("消费============")
 	rabbit:=c.NewRabbit()
 	var err error
 	rabbit.conn, err = amqp.Dial(rabbit.Mqurl)
 	if err != nil {
-		c.Dingding("生成者-RabbitMQ连接失败")
-		return
+		time.Sleep(3 * time.Second)
+		c.MQConsume()
+		c.ErrorInfo(fmt.Sprintf("足迹消费amqp.Dial生成错误:%v",err))
 	}
 	rabbit.channel,err = rabbit.conn.Channel()
 	if err != nil {
-		fmt.Println(err)
+		time.Sleep(3 * time.Second)
+		c.MQConsume()
+		c.ErrorInfo(fmt.Sprintf("足迹消费Channel生成错误:%v",err))
 	}
 	q, err := rabbit.channel.QueueDeclare(
 		rabbit.QueueName,
@@ -111,7 +111,9 @@ func (c *FootPrintMQController)MQConsume() {
 		nil,
 	)
 	if err != nil {
-		fmt.Println(err)
+		time.Sleep(3 * time.Second)
+		c.MQConsume()
+		c.ErrorInfo(fmt.Sprintf("足迹消费QueueDeclare生成错误:%v",err))
 	}
 
 	//消费者流控
@@ -140,12 +142,25 @@ func (c *FootPrintMQController)MQConsume() {
 
 	forever := make(chan bool)
 	go func() {
-		for d := range msgs {
-			//消息逻辑处理，可以自行设计逻辑
-			log.Printf("Received a message: %s", d.Body)
-			//如果为true表示确认所有未确认的消息，
-			//为false表示确认当前消息
-			d.Ack(false)
+		closeChan := make(chan *amqp.Error, 1)
+		notifyClose := rabbit.channel.NotifyClose(closeChan)
+		//一旦消费者的channel有错误，产生一个amqp.Error，channel监听并捕捉到这个错误
+		closeFlag := false
+		for {
+			select {
+			case e := <-notifyClose:
+				close(closeChan)
+				time.Sleep(3 * time.Second)
+				c.MQConsume()
+				c.SiteLogs(logName,fmt.Sprintf("消费禅道出错：%v",e.Error()),2)
+				closeFlag = true
+			case msg := <-msgs:
+				c.SiteLogs(logName,fmt.Sprintf("消费了 msg:%v",string(msg.Body)),1)
+				msg.Ack(false)
+			}
+			if closeFlag {
+				break
+			}
 		}
 	}()
 	<-forever
@@ -157,13 +172,20 @@ func (c *FootPrintMQController)MQConsume() {
 func (c *FootPrintMQController)Sendtaskfootprint(postdata []byte){
 	fmt.Println(string(postdata))
 
-	
+
 	return
 	//url := beego.AppConfig.String("tasksite")+"home/footprint/addfootprint.php"
 	//ret ,_:= c.Curlpost(url, postdata)
 	//if status,ok := ret["status"].(int);!ok || status!=200{
 	//	logs.Info("足迹添加失败")
 	//}
+}
+
+func (c *FootPrintMQController)ErrorInfo(msg string){
+	c.SiteLogs("footprint.log",msg,2)
+	c.Dingding(msg)
+	c.Data["json"] = map[string]interface{}{"status":500,"msg":msg}
+	c.ServeJSON()
 }
 
 
