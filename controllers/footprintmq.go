@@ -156,6 +156,8 @@ func (c *FootPrintMQController)MQConsume() {
 */
 func (c *FootPrintMQController)Sendtaskfootprint(postdata []byte){
 	fmt.Println(string(postdata))
+
+	
 	return
 	//url := beego.AppConfig.String("tasksite")+"home/footprint/addfootprint.php"
 	//ret ,_:= c.Curlpost(url, postdata)
